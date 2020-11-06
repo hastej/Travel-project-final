@@ -78,3 +78,6 @@ body {
   color:#31112c;
 
 }
+span.carousel-control-prev-icon {
+  margin-right: 85px !important;
+}
