@@ -1,0 +1,157 @@
+var myApp = angular.module('travello', []);
+
+myApp.value('SORTING_TYPES', ['Cheapest', 'Fastest']);
+
+myApp.controller('mainController', ['$scope', 'SORTING_TYPES', 'tripService', 'shortestPathFinder', '$window', function($scope, SORTING_TYPES, tripService, shortestPathFinder, $window) {
+    
+    var dealReferenceMap = {};
+    $scope.sorting_types = SORTING_TYPES;   
+    $scope.sortingType = $scope.sorting_types[0];
+    $scope.fromCity;
+    $scope.toCity;
+    $scope.trips;
+    $scope.unitTotals;
+
+    tripService.get()
+        .then(function (response) {  
+           $scope.deals = response.data.deals;
+           dealReferenceMap = getDealReferenceMap($scope.deals);
+           $scope.cities = getCities($scope.deals);
+
+        }, function (errors) {
+           console.log(errors);
+        });
+
+    $scope.changeSortingType = function(sortingType) {
+        $scope.sortingType = sortingType;
+    };
+
+    $scope.submitForm = function() {
+        if (!$scope.validate($scope.fromCity, $scope.toCity))
+            return;
+
+        $scope.trips = shortestPathFinder.find($scope.deals, dealReferenceMap, $scope.sortingType, $scope.fromCity, $scope.toCity);
+
+        $scope.unitTotals = getUnitTotals($scope.trips);
+    };
+
+    $scope.validate = function(fromCity, toCity) {
+        var isValid = true;
+        var invalidAnimation = 'animated jello';
+
+        if (!fromCity) {
+            $('#fromCitySelect')
+                .addClass(invalidAnimation)
+                .popover({
+                    placement: 'left',
+                    content: 'Please select departure city'
+                })
+                .popover('show')
+                .on('click', function(e) {
+                    $(this)
+                        .popover('hide')
+                        .removeClass(invalidAnimation);
+                });
+
+            isValid = false;
+        }
+
+        if (!toCity) {
+            $('#toCitySelect')
+                .addClass(invalidAnimation)
+                .popover({
+                    placement:'left',
+                    content:'Please select arrival city'
+                })
+                .popover('show')
+                .on('click', function(e) {
+                    $(this)
+                        .popover('hide')
+                        .removeClass(invalidAnimation);
+                });
+
+            isValid = false;
+        }
+
+        if (fromCity && toCity && fromCity == toCity) {
+            $scope.trips = null;
+            $('#fromToCityContainer')
+                .addClass(invalidAnimation)
+                .popover({
+                    placement:'left',
+                    content:'Please select different cities'
+                })
+                .popover('show')
+                .on('click', function(e) {
+                    $(this)
+                        .popover('hide')
+                        .removeClass(invalidAnimation);
+                });
+
+            isValid = false;
+        }
+
+        return isValid;
+    }
+    $scope.reset = function(){
+        $window.location.reload();
+    }
+
+    function getUnitTotals(trips) {
+        var unitTotals = {tripsCount:trips.length, cost:0, savings:0, time:{h:0, m:0}, transportCount:{bus:0, car:0, train:0}};
+        for (var i in trips) {
+            var trip = trips[i];
+            unitTotals.cost += trip.cost * (1 - (trip.discount * .01));
+            unitTotals.savings += trip.cost * (trip.discount * .01);
+            unitTotals.time.h += parseInt(trip.duration.h);
+            unitTotals.time.m += parseInt(trip.duration.m);
+            unitTotals.transportCount[trip.transport] += 1;
+        }
+
+        if (unitTotals.time.m >= 60) {
+            var newMinutes = unitTotals.time.m % 60;
+            var addHours = parseInt(unitTotals.time.m / 60);
+            unitTotals.time.h += addHours;
+            unitTotals.time.m = newMinutes;
+        }
+
+        if (unitTotals.time.h < 10)
+            unitTotals.time.h = '0' + unitTotals.time.h;
+
+        if (unitTotals.time.m < 10)
+            unitTotals.time.m = '0' + unitTotals.time.m;
+
+        return unitTotals;
+    }
+
+    function getCities(deals) {
+        var tmp = {};
+        var cities = [];
+        for (var i in deals) {
+            var deal = deals[i];
+
+            if (!tmp[deal.departure]) {
+                tmp[deal.departure] = 1;
+                cities.push(deal.departure);
+            }
+
+            if (!tmp[deal.arrival]) {
+                tmp[deal.arrival] = 1;
+                cities.push(deal.arrival);
+            }
+        }
+
+        cities.sort(); // alphabetical order
+        return cities;
+    }
+
+    function getDealReferenceMap(deals) {
+        var dealsMap = [];
+        for (var i in deals) {
+            dealsMap[deals[i].reference] = deals[i];
+        }
+
+        return dealsMap;
+    }
+
+}]);

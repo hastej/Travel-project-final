@@ -1,0 +1,51 @@
+body{
+  margin: 0;
+}
+
+body {
+ background-image: url("/images/travel.jpg");
+ background-size: cover;
+}
+
+h1{
+
+font-size:2em;
+font-family: 'Fredoka One', cursive;
+color: #fcf1f1;
+  text-shadow: 2px 2px black;
+
+}
+
+h2{
+  font-family: 'Fredoka One', cursive;
+  font-style: italic;
+  color: #fcf1f1;
+    text-shadow: 2px 2px  black;
+
+}
+
+.botton{
+  text-align: center;
+  height: 40%;
+  font-size: 2em;
+    margin-top: 17%;
+      text-shadow: 2px 2px  black;
+}
+
+.btn{
+  height:60px;
+}
+
+.btn:hover{
+  opacity: .4;
+  transform: scale(1.2);
+
+}
+.buttontext{
+
+  font-size: 30px;
+  font-style: italic;
+    text-shadow: 2px 2px  black;
+
+
+}

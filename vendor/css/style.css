@@ -1,0 +1,80 @@
+body {
+  padding-top: 56px;
+}
+.navbar {
+    background-color: #31112c;
+}
+.list-group-item .btn{
+    width: 100%;
+    margin: 10px 0;
+}
+.cost{
+    float: right;
+    display: inline-block;
+}
+.first-image{
+  max-width: 95%;
+  max-height: 95%;
+}
+.discount{
+    float: right;
+    display: inline-block;
+    font-weight: 500;
+}
+.mrt{
+    margin-right: 10px;
+}
+.total{
+    background-color: #f6f6f6;
+    font-size: 1.5rem;
+    padding: 10px;
+    font-weight: 500;
+}
+.footer {
+    background-color: #31112c;
+}
+
+.footertext {
+    color: white;
+    text-align: center;
+}
+.navbar-contents{
+  text-align: right;
+  color: white;
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 15px;
+}
+.about-us{
+  margin-left: 800px;
+}
+.empty{
+  background-color: #f6f5f1;
+  padding: 50px 50px;
+  width:25%;
+  margin: 10px 10px;
+  font-family: 'Anton', sans-serif;
+  text-align: center;
+  display: inline-block;
+  box-shadow: 4px 4px;
+  color:#31112c;
+
+
+}
+
+.ttt{
+  font-size: 15px!important;
+}
+.cpp{
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 150px;
+
+}
+.auh1{
+  text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: 2em!important;
+  color:#31112c;
+
+}
