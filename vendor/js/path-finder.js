@@ -51,8 +51,6 @@ function ShortestPathFinder() {
             if (u === dest) // terminate search early if we reach destination vertex
                 break;
 
-            // u (from city), v (to city)
-            // so this iterates all adjacent trips u -> v
             for (var v in graph[u]) {
                 if (!unvisitedQueue.inQueue(v))
                     continue;
