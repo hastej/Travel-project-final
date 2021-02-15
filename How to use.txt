@@ -1,0 +1,5 @@
+First install node.js on your device
+then open in cmd promt
+cd into the folder
+give command "npm install"
+then run by giving command "node server.js"
