@@ -1,6 +1,6 @@
 {
   "title": "Travel Advisor",
-  "name": "travelo",
+  "name": "Travel Advisor",
   "version": "4.2.0",
   "scripts": {
     "start": "nodemon server.js"
